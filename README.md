@@ -25,69 +25,17 @@ Aplikasi web sederhana untuk mengelola operasional laundry sepatu: pencatatan pe
 - **Frontend:** HTML, CSS, JavaScript
 - **Backend:** Node.js (modul bawaan; tidak memerlukan `package.json`)
 - **Database:** Supabase PostgreSQL
-- **Diagram ERD dan dokumentasi skema:** Mermaid dan Markdown
+- **Diagram ERD:** SVG, ditampilkan langsung di bawah
 
 ## ERD (Entity Relationship Diagram)
 
-Diagram berikut menggambarkan empat tabel utama dan relasi yang benar-benar diterapkan pada PostgreSQL. GitHub mendukung blok Mermaid dan akan menampilkannya sebagai diagram pada halaman README.
+Diagram berikut menggambarkan empat tabel utama yang benar-benar diterapkan pada PostgreSQL. Diagram disertakan sebagai SVG agar tampil langsung pada README GitHub.
 
-```mermaid
-erDiagram
-    CUSTOMERS ||--o{ ORDERS : membuat
-    SERVICES ||--o{ ORDERS : layanan_utama
-    ORDERS ||--o{ PAYMENTS : menerima_pembayaran
-
-    CUSTOMERS {
-        uuid id PK
-        text name
-        text phone
-        timestamptz created_at
-    }
-
-    SERVICES {
-        uuid id PK
-        text name UK
-        text description
-        numeric price
-        jsonb price_by_shoe_type
-        integer estimated_days
-        boolean is_active
-        timestamptz created_at
-    }
-
-    ORDERS {
-        uuid id PK
-        text order_number UK
-        uuid customer_id FK
-        uuid service_id FK
-        text shoe_type
-        text shoe_brand
-        text shoe_size
-        text status
-        numeric total_amount
-        text delivery_type
-        text delivery_address
-        text delivery_proof
-        timestamptz completed_at
-        text notes
-        timestamptz created_at
-    }
-
-    PAYMENTS {
-        uuid id PK
-        uuid order_id FK
-        numeric amount
-        text payment_method
-        text transaction_type
-        text description
-        text category
-        timestamptz payment_date
-    }
-```
+![ERD Sistem Kas Laundry Sepatu T-Step Lab](ERD.svg)
 
 **Ringkasan relasi:** satu pelanggan dapat memiliki banyak pesanan; satu layanan dapat menjadi layanan utama pada banyak pesanan; satu pesanan dapat memiliki banyak pembayaran. Pengeluaran operasional juga tersimpan pada `payments`, dengan `order_id` kosong dan tipe transaksi `expense`.
 
-> **Catatan model multi-pasang:** ERD di atas menampilkan tabel fisik yang ada. Rincian beberapa pasang sepatu serta metadata logistik disimpan aplikasi dalam payload pada `orders.notes`, bukan pada tabel `order_items` terpisah. Penjelasan lengkap tersedia di [dokumentasi skema dan ERD](docs/SKEMA-SISTEM-KAS-LAUNDRY-SEPATU.md).
+> **Catatan model multi-pasang:** ERD di atas menampilkan tabel fisik yang ada. Rincian beberapa pasang sepatu serta metadata logistik disimpan aplikasi dalam payload pada `orders.notes`, bukan pada tabel `order_items` terpisah. Struktur SQL lengkap tersedia di [`backend/schema.sql`](backend/schema.sql).
 
 ## Struktur folder
 
@@ -97,12 +45,11 @@ T-Step-Lab-App/
 │   ├── app.js                 # Server HTTP dan API
 │   ├── schema.sql             # Skema PostgreSQL untuk Supabase
 │   └── .env                   # Konfigurasi lokal; jangan unggah ke GitHub
-├── docs/
-│   └── SKEMA-SISTEM-KAS-LAUNDRY-SEPATU.md
 ├── frontend/
 │   ├── index.html
 │   ├── app.js
 │   └── styles.css
+├── ERD.svg                    # Diagram relasi basis data
 ├── Buka T-Step Lab.bat        # Menjalankan server dan membuka browser di Windows
 └── README.md
 ```
@@ -135,12 +82,11 @@ Akun demo Admin dan Owner saat ini didefinisikan pada backend. Untuk penggunaan 
 
 ## Dokumentasi skema dan ERD
 
-Penjelasan tabel `customers`, `services`, `orders`, dan `payments`, relasi ERD, batasan data, fungsi PostgreSQL, serta catatan model multi-pasang tersedia di:
+Skema PostgreSQL lengkap untuk tabel `customers`, `services`, `orders`, dan `payments`, termasuk constraint, indeks, serta fungsi RPC tersedia di:
 
-- [Dokumentasi skema dan ERD](docs/SKEMA-SISTEM-KAS-LAUNDRY-SEPATU.md)
 - [SQL skema Supabase](backend/schema.sql)
 
-**Catatan model:** detail beberapa pasang sepatu dan sebagian metadata pengantaran saat ini disimpan dalam metadata terenkode di `orders.notes`, bukan sebagai tabel `order_items` terpisah. Lihat dokumentasi ERD untuk dampaknya terhadap query dan pengembangan berikutnya.
+**Catatan model:** detail beberapa pasang sepatu dan sebagian metadata pengantaran saat ini disimpan dalam metadata terenkode di `orders.notes`, bukan sebagai tabel `order_items` terpisah. Karena itu, ERD menggambarkan relasi tabel yang benar-benar ada di database, bukan struktur internal payload tersebut.
 
 ## Keamanan sebelum publikasi
 

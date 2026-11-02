@@ -5,28 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#eaf3ff">
     <title>T-Step Lab - Sistem Laundry Sepatu</title>
-    <script>
-      if (window.location.protocol === "file:") {
-        fetch("http://localhost:3000/", { mode: "no-cors", cache: "no-store" })
-          .then(() => window.location.replace("http://localhost:3000/"))
-          .catch(() => {
-            document.documentElement.classList.add("server-required");
-            const showMessage = () => {
-              const message = document.querySelector("#server-required");
-              if (message) message.hidden = false;
-              document.querySelector("#retry-server")?.addEventListener("click", () => window.location.reload());
-            };
-            if (document.readyState === "loading") {
-              document.addEventListener("DOMContentLoaded", showMessage, { once: true });
-            } else {
-              showMessage();
-            }
-          });
-      }
-    </script>
     <link rel="stylesheet" href="styles.css">
-    <script src="config.js?v=3"></script>
-    <script src="app.js?v=3" defer></script>
+    <script src="frontend/config.js?v=5"></script>
+    <script src="frontend/app.js?v=5" defer></script>
   </head>
   <body>
     <svg class="illustration-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -45,14 +26,6 @@
         <circle cx="370" cy="224" r="4" fill="#78a9e7"/>
       </symbol>
     </svg>
-    <main class="server-required" id="server-required" hidden>
-      <section>
-        <p class="eyebrow">T-STEP LAB · SUPABASE</p>
-        <h1>Menyalakan aplikasi</h1>
-        <p>Server aplikasi belum berjalan. Buka folder proyek, klik dua kali <strong>Buka T-Step Lab.bat</strong>, lalu halaman ini akan terhubung ke Supabase.</p>
-        <button class="button button-primary" id="retry-server" type="button">Coba lagi</button>
-      </section>
-    </main>
     <section class="login-screen" id="login-screen">
       <aside class="login-story" aria-label="Ilustrasi perawatan sepatu">
         <a class="brand login-story-brand" href="#" aria-label="T-Step Lab">
@@ -84,7 +57,7 @@
 
     <div class="app-shell" id="app-shell" hidden>
       <aside class="sidebar">
-        <a class="brand" href="/" aria-label="T-Step Lab beranda">
+        <a class="brand" href="./" aria-label="T-Step Lab beranda">
           <span class="brand-mark">T</span>
           <span>T-Step <span class="brand-accent">Lab</span></span>
         </a>

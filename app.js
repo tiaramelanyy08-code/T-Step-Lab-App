@@ -33,13 +33,18 @@ const SUPABASE_SERVICE_ROLE_KEY = (
   ""
 ).trim();
 const FRONTEND_ORIGINS = new Set(
-  (process.env.FRONTEND_ORIGINS ||
-    "http://localhost:3000,http://127.0.0.1:3000,https://tiaramelanyy08-code.github.io")
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean)
+  [
+    ...(
+      process.env.FRONTEND_ORIGINS ||
+      "http://localhost:3000,http://127.0.0.1:3000,https://tiaramelanyy08-code.github.io"
+    )
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean),
+    process.env.RENDER_EXTERNAL_URL,
+  ].filter(Boolean)
 );
-const FRONTEND_DIR = path.resolve(__dirname, "..", "frontend");
+const FRONTEND_DIR = path.resolve(__dirname, "frontend");
 const SESSION_COOKIE = "t_step_session";
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 const rupiah = new Intl.NumberFormat("id-ID", {
@@ -227,7 +232,7 @@ async function checkSupabaseConnection() {
     } else if (response.status === 401 || response.status === 403) {
       console.error("Supabase menolak key. Pastikan memakai Secret key atau service_role key yang benar.");
     } else if (response.status === 404) {
-      console.error("Supabase dapat dijangkau, tetapi tabel services belum tersedia. Jalankan backend/schema.sql.");
+      console.error("Supabase dapat dijangkau, tetapi tabel services belum tersedia. Jalankan schema.sql.");
     } else {
       console.error(`Supabase dapat dijangkau, tetapi pemeriksaan tabel gagal (HTTP ${response.status}).`);
     }
@@ -993,7 +998,7 @@ try {
 if (SUPABASE_SERVICE_ROLE_KEY.startsWith("sb_publishable_")) {
   console.error(
     "SUPABASE_SECRET_KEY berisi Publishable key. Backend ini memerlukan Supabase Secret key " +
-    "(sb_secret_...) atau service_role key lama. Simpan key tersebut hanya di backend/.env atau environment hosting."
+    "(sb_secret_...) atau service_role key lama. Simpan key tersebut hanya di .env atau environment hosting."
   );
 }
 
@@ -1002,7 +1007,7 @@ if (!validSupabaseUrl || !hasServerSupabaseKey() ||
   console.error(
     "Konfigurasi Supabase tidak valid. Atur SUPABASE_URL dan SUPABASE_SECRET_KEY " +
     "(atau SUPABASE_SERVICE_ROLE_KEY), ADMIN_USERNAME, ADMIN_PASSWORD, OWNER_USERNAME, " +
-    "dan OWNER_PASSWORD di environment backend. Key Supabase harus berupa Secret/service_role, bukan publishable/anon."
+    "dan OWNER_PASSWORD di file .env atau environment hosting. Key Supabase harus berupa Secret/service_role, bukan publishable/anon."
   );
   process.exitCode = 1;
 } else {

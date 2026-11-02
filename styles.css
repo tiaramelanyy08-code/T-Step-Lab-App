@@ -17,13 +17,6 @@ body { margin: 0; min-width: 360px; }
 button, input, select, textarea { font: inherit; }
 button, a, summary { -webkit-tap-highlight-color: transparent; }
 [hidden] { display: none !important; }
-html.server-required #login-screen, html.server-required #app-shell { display: none !important; }
-.server-required { display: grid; min-height: 100vh; place-items: center; padding: 24px; background: radial-gradient(ellipse at 18% 18%, #dcecff, transparent 48%), #f3f7fc; }
-.server-required section { width: min(100%, 470px); padding: 34px; border: 1px solid var(--border); border-radius: 18px; background: #fff; box-shadow: 0 22px 65px #183d6814; }
-.server-required .eyebrow { color: #397bc2; }
-.server-required h1 { margin: 10px 0; color: #183d68; }
-.server-required p:not(.eyebrow) { color: #71859d; font-size: 13px; line-height: 1.7; }
-.server-required .button { margin-top: 6px; }
 
 .illustration-library { position: absolute; width: 0; height: 0; overflow: hidden; }
 .login-screen { display: grid; grid-template-columns: minmax(0, 480px) minmax(360px, 410px); align-content: center; align-items: center; justify-content: center; gap: clamp(36px, 7vw, 110px); min-height: 100vh; padding: 40px; background: radial-gradient(ellipse at 18% 18%, #dcecff, transparent 48%), #f3f7fc; }

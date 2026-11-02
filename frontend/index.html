@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#eaf3ff">
+    <title>T-Step Lab - Sistem Laundry Sepatu</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js?v=5"></script>
+    <script src="app.js?v=5" defer></script>
+  </head>
+  <body>
+    <svg class="illustration-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="shoe-care-art" viewBox="0 0 480 340">
+        <circle cx="242" cy="174" r="137" fill="#dcecff"/>
+        <circle cx="242" cy="174" r="108" fill="#edf5ff"/>
+        <path d="M75 233c29-2 57-12 77-31l31-31 50 23c24 11 49 17 75 20l64 8c14 2 24 13 24 27 0 13-11 24-25 24H95c-19 0-31-9-31-22 0-10 4-16 11-18Z" fill="#153b68"/>
+        <path d="m151 200 31-31 50 23c20 9 40 14 62 18l-18 25-112 2-37-15Z" fill="#f8fbff"/>
+        <path d="m182 169 26-28c8-9 20-12 31-8l45 18c15 6 24 16 24 31l-2 27-44-13-50-23-18 18-21-9Z" fill="#8bbaf0"/>
+        <path d="m223 143 7-25c3-10 13-16 23-13l18 6c10 3 16 13 13 23l-5 18Z" fill="#b9d8fa"/>
+        <path d="m193 169 43 7m-32 6 43 7m-30 7 39 7" fill="none" stroke="#153b68" stroke-linecap="round" stroke-width="5"/>
+        <path d="M84 244c72 14 223 19 307 1" fill="none" stroke="#b9d8fa" stroke-linecap="round" stroke-width="5"/>
+        <path d="m117 113 8 15m-22 8 16 1m270-53 6 13m-19 7 13 1" fill="none" stroke="#4d8bd2" stroke-linecap="round" stroke-width="5"/>
+        <path d="m354 153 5 11 12 2-9 8 2 12-10-6-10 6 2-12-9-8 12-2Z" fill="#78a9e7"/>
+        <circle cx="139" cy="106" r="5" fill="#78a9e7"/>
+        <circle cx="370" cy="224" r="4" fill="#78a9e7"/>
+      </symbol>
+    </svg>
+    <section class="login-screen" id="login-screen">
+      <aside class="login-story" aria-label="Ilustrasi perawatan sepatu">
+        <a class="brand login-story-brand" href="#" aria-label="T-Step Lab">
+          <span class="brand-mark">T</span>
+          <span>T-Step <span class="brand-accent">Lab</span></span>
+        </a>
+        <div class="login-artwork">
+          <svg viewBox="0 0 480 340" role="img" aria-label="Ilustrasi sepatu bersih dengan gelembung air">
+            <use href="#shoe-care-art"></use>
+          </svg>
+        </div>
+        <p class="eyebrow">SHOE CARE STUDIO</p>
+        <h2>Rawat sepatu.<br>Jaga setiap langkah.</h2>
+        <p class="login-story-copy">Kelola layanan laundry sepatu dengan proses yang lebih rapi dan nyaman.</p>
+        <div class="login-story-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      </aside>
+      <form class="login-card" id="login-form">
+        <p class="eyebrow">SISTEM OPERASIONAL</p>
+        <h1>Selamat datang</h1>
+        <p class="subheading">Masuk ke workspace laundry sepatu Anda.</p>
+        <label for="login-username">Email akun</label>
+        <input id="login-username" name="username" type="email" autocomplete="username" placeholder="nama@TStepLab.com" required>
+        <label for="login-password">Password</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required>
+        <button class="button button-primary full-width" type="submit">Masuk ke sistem <span aria-hidden="true">→</span></button>
+        <p class="form-message" id="login-message" role="status"></p>
+      </form>
+    </section>
+
+    <div class="app-shell" id="app-shell" hidden>
+      <aside class="sidebar">
+        <a class="brand" href="./" aria-label="T-Step Lab beranda">
+          <span class="brand-mark">T</span>
+          <span>T-Step <span class="brand-accent">Lab</span></span>
+        </a>
+        <div class="sidebar-label">MENU UTAMA</div>
+        <nav class="role-navigation" id="role-navigation" aria-label="Menu utama"></nav>
+        <div class="sidebar-note">
+          <span class="note-icon" aria-hidden="true">✦</span>
+          <strong>Sepatu bersih,<br>catatan rapi.</strong>
+          <p>Kelola pesanan dan pemasukan laundry dalam satu tempat.</p>
+        </div>
+        <div class="sidebar-footer"><span class="status-dot"></span> Sistem siap digunakan</div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumb">Workspace <span>/</span> <span id="current-page">Ringkasan</span></div>
+          <div class="topbar-right">
+            <span class="connection-status" id="connection-status">Menghubungkan...</span>
+            <span class="role-badge" id="role-badge"></span>
+            <button class="logout-button" id="logout-button" type="button">Keluar</button>
+            <div class="today" id="today"></div>
+          </div>
+        </header>
+
+        <section class="workspace-banner" aria-label="T-Step Lab shoe care">
+          <div class="workspace-banner-copy">
+            <p class="eyebrow" id="workspace-eyebrow">T-STEP LAB · SHOE CARE</p>
+            <h2 id="workspace-title">Perawatan sepatu, lebih teratur.</h2>
+            <p id="workspace-subtitle">Setiap pasang sepatu mendapat perhatian terbaik.</p>
+          </div>
+          <div class="workspace-banner-art" aria-hidden="true">
+            <svg viewBox="0 0 480 340"><use href="#shoe-care-art"></use></svg>
+          </div>
+          <div class="workspace-banner-highlight" aria-hidden="true">
+            <span>✦</span>
+            <div><strong>Perawatan premium</strong><small>Untuk setiap jenis sepatu</small></div>
+          </div>
+          <span class="workspace-banner-tag"><span class="status-dot"></span> Clean care, every step</span>
+        </section>
+
+        <section class="page-view" id="owner-dashboard" data-page="owner-dashboard">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">OVERVIEW BISNIS</p>
+              <h1>Dashboard Owner</h1>
+              <p class="subheading">Ringkasan pendapatan dan progres operasional laundry.</p>
+            </div>
+          </div>
+          <section class="stats-grid" aria-label="Ringkasan bisnis">
+          <article class="stat-card">
+            <div class="stat-top"><span>Total pendapatan</span><span class="stat-icon mint" aria-hidden="true">↗</span></div>
+            <strong id="cash-in">Rp0</strong>
+            <p>Pembayaran pelanggan diterima</p>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Sepatu selesai</span><span class="stat-icon lilac" aria-hidden="true">✓</span></div>
+            <strong id="completed-orders">0</strong>
+            <p>Pesanan sudah selesai diproses</p>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Masih dikerjakan</span><span class="stat-icon blue" aria-hidden="true">◷</span></div>
+            <strong id="active-orders">0</strong>
+            <p>Pesanan belum selesai</p>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Kas masuk</span><span class="stat-icon mint" aria-hidden="true">＋</span></div>
+            <strong id="cash-in-extra">Rp0</strong>
+            <p>Pembayaran yang sudah diterima</p>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Kas keluar</span><span class="stat-icon peach" aria-hidden="true">↙</span></div>
+            <strong id="cash-out">Rp0</strong>
+            <p>Pengeluaran operasional</p>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Tagihan pelanggan</span><span class="stat-icon blue" aria-hidden="true">◷</span></div>
+            <strong id="outstanding">Rp0</strong>
+            <p>Sisa pesanan belum dibayar</p>
+          </article>
+          </section>
+        </section>
+
+        <section class="content-grid page-view" id="new-order" data-page="new-order">
+          <article class="panel order-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">OPERASIONAL ADMIN</p><h2>Input order masuk</h2></div>
+              <span class="panel-heading-icon" aria-hidden="true">＋</span>
+            </div>
+            <form id="order-form">
+              <label for="customer-name">Nama pelanggan</label>
+              <input id="customer-name" name="customer_name" type="text" maxlength="120" placeholder="Ketik nama pelanggan" autocomplete="name" required>
+              <label for="customer-phone">Nomor telepon</label>
+              <input id="customer-phone" name="customer_phone" type="tel" maxlength="30" placeholder="08xxxxxxxxxx" autocomplete="tel" required>
+
+              <div class="shoe-items-heading">
+                <div>
+                  <label>Sepatu yang dicuci</label>
+                  <small class="field-help">Tambahkan satu isian untuk setiap pasang. Layanan dan tarif dihitung per pasang.</small>
+                </div>
+                <button class="button button-outline add-shoe-button" id="add-shoe-item" type="button">＋ Tambah sepatu</button>
+              </div>
+              <div class="shoe-items-list" id="shoe-items-list"></div>
+              <div class="order-price-preview"><span>Total harga semua pasang</span><strong id="order-price">Rp0</strong></div>
+              <small class="field-help" id="delivery-fee-note" hidden></small>
+
+              <div class="form-row">
+                <div>
+                  <label for="initial-payment">Pembayaran awal</label>
+                  <div class="input-prefix"><span>Rp</span><input id="initial-payment" name="initial_payment" type="number" min="0" step="1" value="0" required></div>
+                  <small class="field-help" id="minimum-payment-help">Minimal pembayaran awal: Rp0.</small>
+                </div>
+                <div>
+                  <label for="payment-method">Metode bayar</label>
+                  <select id="payment-method" name="payment_method">
+                    <option value="cash">Tunai</option>
+                    <option value="transfer">Transfer</option>
+                    <option value="qris">QRIS</option>
+                  </select>
+                </div>
+              </div>
+              <label>Status pembayaran</label>
+              <div class="payment-status-preview" id="payment-status-preview" role="status" aria-live="polite">
+                <span class="payment-status-dot" aria-hidden="true"></span>
+                <strong id="payment-status-label">Belum bayar</strong>
+                <span id="payment-status-detail">Belum ada pembayaran yang dicatat.</span>
+              </div>
+              <label>Cara sepatu masuk ke laundry</label>
+              <div class="delivery-options">
+                <label class="delivery-option"><input type="radio" name="pickup_method" value="store_dropoff" checked> Pelanggan antar ke toko</label>
+                <label class="delivery-option"><input type="radio" name="pickup_method" value="home_pickup"> Dijemput di rumah</label>
+              </div>
+              <div id="return-method-field">
+                <label>Setelah selesai dicuci</label>
+                <div class="delivery-options">
+                  <label class="delivery-option"><input type="radio" name="return_method" value="self_pickup" checked> Pelanggan ambil di toko</label>
+                  <label class="delivery-option"><input type="radio" name="return_method" value="employee_delivery"> Diantar karyawan</label>
+                </div>
+              </div>
+              <div id="delivery-address-field" hidden>
+                <label for="delivery-address">Alamat penjemputan / pengantaran</label>
+                <textarea id="delivery-address" name="delivery_address" rows="2" placeholder="Alamat lengkap dan patokan"></textarea>
+              </div>
+              <label for="notes">Catatan <span class="optional">(opsional)</span></label>
+              <textarea id="notes" name="notes" rows="2" placeholder="Contoh: sepatu warna putih, noda membandel"></textarea>
+              <button class="button button-primary full-width" type="submit">Simpan pesanan <span aria-hidden="true">→</span></button>
+              <p class="form-message" id="order-message" role="status"></p>
+            </form>
+          </article>
+          <aside class="panel order-care-card">
+            <div class="order-care-art" aria-hidden="true">
+              <svg viewBox="0 0 480 340"><use href="#shoe-care-art"></use></svg>
+            </div>
+            <p class="eyebrow">CARE THAT SHOWS</p>
+            <h2>Sepatu terawat,<br>pelanggan kembali.</h2>
+            <p class="order-care-copy">Catat detail sejak awal agar setiap pasang mendapat perawatan yang tepat.</p>
+            <div class="care-steps">
+              <div><span>01</span><p><strong>Kenali bahannya</strong><small>Suede, canvas, kulit, dan lainnya.</small></p></div>
+              <div><span>02</span><p><strong>Periksa kondisi</strong><small>Catat noda atau kebutuhan khusus.</small></p></div>
+              <div><span>03</span><p><strong>Rawat dengan teliti</strong><small>Perbarui status hingga siap diambil.</small></p></div>
+            </div>
+            <div class="care-card-footer"><span class="status-dot"></span> Langkah kecil, hasil terbaik.</div>
+          </aside>
+        </section>
+
+        <section class="panel ledger-panel page-view" id="orders" data-page="orders">
+            <div class="ledger-heading">
+              <div><p class="eyebrow">OPERASIONAL ADMIN & OWNER</p><h2>Status antrean & kasir</h2></div>
+              <span class="live-label"><span class="status-dot"></span> Terkini</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>PELANGGAN</th><th>LAYANAN / SEPATU</th><th>TANGGAL</th><th>STATUS CUCI</th><th>BUKTI FOTO ANTAR</th><th>PEMBAYARAN</th><th>TOTAL / SISA</th><th>AKSI</th></tr>
+                </thead>
+                <tbody id="orders-body">
+                  <tr><td class="empty-state" colspan="8">Memuat pesanan...</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="form-message ledger-message" id="ledger-message" role="status"></p>
+        </section>
+        <section class="page-view report-panel" id="reports" data-page="reports">
+          <div class="ledger-heading">
+            <div><p class="eyebrow">MONITORING OWNER</p><h2>Laporan transaksi lengkap</h2></div>
+            <span class="live-label" id="report-count">0 order</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>NO. ORDER</th><th>TANGGAL</th><th>PELANGGAN</th><th>SEPATU</th><th>LAYANAN</th><th>BIAYA</th><th>STATUS BAYAR</th><th>METODE</th><th>STATUS CUCI</th></tr>
+              </thead>
+              <tbody id="report-body"><tr><td class="empty-state" colspan="9">Memuat laporan...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="page-view services-panel" id="services" data-page="services">
+          <article class="panel service-management">
+            <div class="ledger-heading">
+              <div><p class="eyebrow">PENGELOLAAN OWNER</p><h2>Kelola layanan & harga</h2></div>
+            </div>
+            <form id="service-form" class="service-form">
+              <label for="service-name">Nama layanan</label>
+              <input id="service-name" name="name" maxlength="100" placeholder="Contoh: Repaint" required>
+              <label for="service-price">Harga layanan</label>
+              <div class="input-prefix"><span>Rp</span><input id="service-price" name="price" type="number" min="0" step="1000" placeholder="0" required></div>
+              <label for="service-days">Estimasi hari</label>
+              <input id="service-days" name="estimated_days" type="number" min="1" value="3" required>
+              <button class="button button-primary" type="submit">Tambah layanan</button>
+              <p class="pricing-hint">Tarif awal dibuat dari harga Canvas. Owner dapat mengatur harga tiap jenis sepatu melalui tombol <strong>Atur tarif</strong>.</p>
+              <p class="form-message" id="service-message" role="status"></p>
+            </form>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>NAMA LAYANAN</th><th>RENTANG HARGA</th><th>ESTIMASI</th><th>STATUS</th><th>TARIF</th></tr></thead>
+                <tbody id="services-body"><tr><td class="empty-state" colspan="5">Memuat layanan...</td></tr></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="cashbook-section page-view" id="cashbook" data-page="cashbook">
+          <article class="panel expense-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">KAS KELUAR</p><h2>Catat pengeluaran</h2></div>
+              <span class="stat-icon peach" aria-hidden="true">↙</span>
+            </div>
+            <form id="expense-form">
+              <label for="expense-description">Keterangan</label>
+              <input id="expense-description" name="description" type="text" maxlength="160" placeholder="Contoh: beli sabun dan sikat" required>
+              <label for="expense-category">Kategori</label>
+              <select id="expense-category" name="category" required>
+                <option value="supplies">Bahan & perlengkapan</option>
+                <option value="operations">Operasional</option>
+                <option value="other">Lain-lain</option>
+              </select>
+              <div class="form-row">
+                <div>
+                  <label for="expense-amount">Jumlah</label>
+                  <div class="input-prefix"><span>Rp</span><input id="expense-amount" name="amount" type="number" min="1" step="1" placeholder="0" required></div>
+                </div>
+                <div>
+                  <label for="expense-method">Dibayar melalui</label>
+                  <select id="expense-method" name="payment_method" required>
+                    <option value="cash">Tunai</option>
+                    <option value="transfer">Transfer</option>
+                    <option value="qris">QRIS</option>
+                  </select>
+                </div>
+              </div>
+              <button class="button button-primary full-width" type="submit">Simpan pengeluaran <span aria-hidden="true">→</span></button>
+              <p class="form-message" id="expense-message" role="status"></p>
+            </form>
+          </article>
+          <article class="panel cashbook-panel">
+          <div class="ledger-heading">
+            <div><p class="eyebrow">RIWAYAT TRANSAKSI</p><h2>Buku kas</h2></div>
+            <div class="cashbook-summary"><span id="cashbook-count">0 transaksi</span><strong id="cashbook-balance">Rp0</strong></div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>TANGGAL</th><th>JENIS</th><th>KETERANGAN</th><th>REFERENSI</th><th>KAS MASUK</th><th>KAS KELUAR</th><th>SALDO</th></tr>
+              </thead>
+              <tbody id="cashbook-body">
+                <tr><td class="empty-state" colspan="7">Memuat buku kas...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          </article>
+        </section>
+        <section class="page-view" id="journal" data-page="journal">
+          <div class="page-heading journal-heading">
+            <div>
+              <p class="eyebrow">PENCATATAN OTOMATIS</p>
+              <h1>Jurnal Umum</h1>
+              <p class="subheading">Pembayaran sebelum order selesai dicatat sebagai uang muka; pendapatan diakui saat order berstatus Selesai.</p>
+            </div>
+          </div>
+          <p class="journal-date-note" id="journal-date-note" hidden>Beberapa order lama tidak memiliki tanggal selesai. Tanggal pengakuan pendapatannya diperkirakan dari tanggal order.</p>
+          <section class="journal-summary" aria-label="Ringkasan jurnal">
+            <article class="stat-card">
+              <div class="stat-top"><span>Total debit</span><span class="stat-icon blue" aria-hidden="true">↙</span></div>
+              <strong id="journal-debit">Rp0</strong>
+              <p id="journal-count">0 baris jurnal</p>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Total kredit</span><span class="stat-icon mint" aria-hidden="true">↗</span></div>
+              <strong id="journal-credit">Rp0</strong>
+              <p>Harus sama dengan total debit</p>
+            </article>
+          </section>
+          <article class="panel journal-panel">
+            <div class="ledger-heading">
+              <div><p class="eyebrow">BUKU JURNAL</p><h2>Riwayat debit & kredit</h2></div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>TANGGAL</th><th>REFERENSI</th><th>KETERANGAN</th><th>AKUN</th><th>DEBIT</th><th>KREDIT</th></tr></thead>
+                <tbody id="journal-body"><tr><td class="empty-state" colspan="6">Memuat jurnal...</td></tr></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+        <dialog class="payment-dialog" id="payment-dialog">
+          <form id="payment-form">
+            <div class="panel-heading">
+              <div><p class="eyebrow">TRANSAKSI</p><h2 id="payment-dialog-title">Catat pembayaran</h2></div>
+              <button class="dialog-close" type="button" id="close-payment" aria-label="Tutup">×</button>
+            </div>
+            <input id="payment-order-id" type="hidden">
+            <label for="payment-amount">Jumlah pembayaran</label>
+            <div class="input-prefix"><span>Rp</span><input id="payment-amount" type="number" min="1" step="1" required></div>
+            <label for="payment-method-entry">Metode pembayaran</label>
+            <select id="payment-method-entry" required>
+              <option value="cash">Tunai</option>
+              <option value="transfer">Transfer</option>
+              <option value="qris">QRIS</option>
+            </select>
+            <p class="field-help" id="payment-help" hidden></p>
+            <p class="form-message" id="payment-message" role="status"></p>
+            <div class="dialog-actions">
+              <button class="button button-outline" id="cancel-payment" type="button">Batal</button>
+              <button class="button button-primary" id="payment-submit-button" type="submit">Simpan pembayaran</button>
+            </div>
+          </form>
+        </dialog>
+        <dialog class="payment-dialog" id="delivery-request-dialog">
+          <form id="delivery-request-form">
+            <div class="panel-heading">
+              <div><p class="eyebrow">PERMINTAAN PELANGGAN</p><h2>Antarkan sepatu</h2></div>
+              <button class="dialog-close" type="button" id="close-delivery-request" aria-label="Tutup">×</button>
+            </div>
+            <input id="delivery-request-order-id" type="hidden">
+            <p class="subheading">Biaya antar tambahan Rp5.000 per pesanan. Sisa tagihan dan biaya antar harus lunas melalui QRIS sebelum sepatu dibawa.</p>
+            <label for="delivery-request-address">Alamat pengantaran</label>
+            <textarea id="delivery-request-address" rows="3" maxlength="500" placeholder="Alamat lengkap dan patokan" required></textarea>
+            <p class="form-message" id="delivery-request-message" role="status"></p>
+            <div class="dialog-actions">
+              <button class="button button-outline" id="cancel-delivery-request" type="button">Batal</button>
+              <button class="button button-primary" type="submit">Tambahkan ongkir Rp5.000</button>
+            </div>
+          </form>
+        </dialog>
+        <dialog class="payment-dialog pricing-dialog" id="pricing-dialog">
+          <form id="pricing-form">
+            <div class="panel-heading">
+              <div><p class="eyebrow">TARIF LAYANAN</p><h2 id="pricing-service-name">Atur harga</h2></div>
+              <button class="dialog-close" type="button" id="close-pricing" aria-label="Tutup">×</button>
+            </div>
+            <p class="pricing-help">Sesuaikan tarif menurut jenis bahan. Harga ini dipakai saat Admin membuat order baru.</p>
+            <input id="pricing-service-id" type="hidden">
+            <div class="pricing-fields" id="pricing-fields"></div>
+            <p class="form-message" id="pricing-message" role="status"></p>
+            <div class="dialog-actions">
+              <button class="button button-outline" id="cancel-pricing" type="button">Batal</button>
+              <button class="button button-primary" type="submit">Simpan tarif</button>
+            </div>
+          </form>
+        </dialog>
+        <dialog class="payment-dialog" id="delivery-proof-dialog">
+          <form id="delivery-proof-form">
+            <div class="panel-heading">
+              <div><p class="eyebrow">PESANAN ANTAR</p><h2>Selesaikan pengantaran</h2></div>
+              <button class="dialog-close" type="button" id="close-proof" aria-label="Tutup">×</button>
+            </div>
+            <input id="proof-order-id" type="hidden">
+            <p class="subheading">Unggah foto sebagai bukti pesanan sudah sampai.</p>
+            <label for="proof-file">Foto bukti pengantaran</label>
+            <input id="proof-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif" required>
+            <p class="form-message" id="proof-message" role="status"></p>
+            <div class="dialog-actions">
+              <button class="button button-outline" id="cancel-proof" type="button">Batal</button>
+              <button class="button button-primary" type="submit">Simpan bukti & selesaikan</button>
+            </div>
+          </form>
+        </dialog>
+        <footer class="page-footer">T-Step Lab <span>·</span> Sistem kas laundry sepatu</footer>
+      </main>
+    </div>
+  </body>
+</html>

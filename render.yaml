@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: t-step-lab-api
+    runtime: node
+    plan: free
+    buildCommand: echo "No build step required"
+    startCommand: node backend/app.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_ORIGINS
+        value: https://tiaramelanyy08-code.github.io
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: OWNER_USERNAME
+        sync: false
+      - key: OWNER_PASSWORD
+        sync: false

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="850" viewBox="0 0 1200 850" role="img" aria-labelledby="title description">
+  <title id="title">ERD Sistem Kas Laundry Sepatu T-Step Lab</title>
+  <desc id="description">Diagram hubungan tabel customers, services, orders, dan payments pada basis data Supabase PostgreSQL.</desc>
+  <defs>
+    <style>
+      text { font-family: Inter, "Segoe UI", Arial, sans-serif; fill: #18324f; }
+      .canvas { fill: #f5f8fc; }
+      .card { fill: #ffffff; stroke: #cbd9e8; stroke-width: 2; }
+      .card-head { fill: #e8f1fb; }
+      .head-text { font-size: 19px; font-weight: 700; letter-spacing: .5px; }
+      .subhead { font-size: 12px; fill: #66809d; }
+      .field { font-family: Consolas, "Courier New", monospace; font-size: 14px; }
+      .key { font-size: 11px; font-weight: 700; fill: #2868a9; }
+      .divider { stroke: #e6edf5; stroke-width: 1; }
+      .relation { fill: none; stroke: #477db5; stroke-width: 3; }
+      .relation-label { font-size: 12px; font-weight: 700; fill: #315d8a; }
+      .note { fill: #fff8e9; stroke: #ead9ad; stroke-width: 1.5; }
+      .note-text { font-size: 12px; fill: #735c2b; }
+    </style>
+  </defs>
+
+  <rect class="canvas" width="1200" height="850" rx="20"/>
+
+  <path class="relation" d="M350 356 C390 356 385 498 430 498"/>
+  <path class="relation" d="M605 325 L605 355"/>
+  <path class="relation" d="M810 560 L865 560"/>
+
+  <text class="relation-label" x="357" y="338">1</text>
+  <text class="relation-label" x="392" y="420">0..N</text>
+  <text class="relation-label" x="619" y="344">1 → 0..N</text>
+  <text class="relation-label" x="814" y="545">1</text>
+  <text class="relation-label" x="828" y="582">0..N</text>
+
+  <g>
+    <rect class="card" x="40" y="220" width="310" height="275" rx="14"/>
+    <path class="card-head" d="M54 220h282a14 14 0 0 1 14 14v50H40v-50a14 14 0 0 1 14-14z"/>
+    <text class="head-text" x="62" y="254">CUSTOMERS</text>
+    <text class="subhead" x="62" y="273">Data pelanggan</text>
+    <text class="field" x="62" y="311">id</text><text class="key" x="286" y="311">PK · UUID</text><line class="divider" x1="60" y1="321" x2="330" y2="321"/>
+    <text class="field" x="62" y="350">name</text><text class="subhead" x="224" y="350">TEXT · wajib</text><line class="divider" x1="60" y1="360" x2="330" y2="360"/>
+    <text class="field" x="62" y="389">phone</text><text class="subhead" x="224" y="389">TEXT · wajib</text><line class="divider" x1="60" y1="399" x2="330" y2="399"/>
+    <text class="field" x="62" y="428">created_at</text><text class="subhead" x="224" y="428">TIMESTAMPTZ</text>
+    <rect x="60" y="452" width="270" height="26" rx="7" fill="#f3f7fb"/>
+    <text class="subhead" x="72" y="470">Satu pelanggan dapat membuat banyak pesanan</text>
+  </g>
+
+  <g>
+    <rect class="card" x="430" y="55" width="350" height="270" rx="14"/>
+    <path class="card-head" d="M444 55h322a14 14 0 0 1 14 14v50H430V69a14 14 0 0 1 14-14z"/>
+    <text class="head-text" x="452" y="89">SERVICES</text>
+    <text class="subhead" x="452" y="108">Katalog layanan dan tarif</text>
+    <text class="field" x="452" y="146">id</text><text class="key" x="704" y="146">PK · UUID</text><line class="divider" x1="450" y1="156" x2="760" y2="156"/>
+    <text class="field" x="452" y="180">name</text><text class="key" x="704" y="180">UNIQUE</text><line class="divider" x1="450" y1="190" x2="760" y2="190"/>
+    <text class="field" x="452" y="214">price</text><text class="subhead" x="650" y="214">NUMERIC</text><line class="divider" x1="450" y1="224" x2="760" y2="224"/>
+    <text class="field" x="452" y="248">price_by_shoe_type</text><text class="subhead" x="650" y="248">JSONB</text><line class="divider" x1="450" y1="258" x2="760" y2="258"/>
+    <text class="field" x="452" y="282">estimated_days · is_active · created_at</text>
+    <text class="subhead" x="452" y="306">Satu layanan dapat dipakai pada banyak pesanan</text>
+  </g>
+
+  <g>
+    <rect class="card" x="430" y="355" width="380" height="405" rx="14"/>
+    <path class="card-head" d="M444 355h352a14 14 0 0 1 14 14v50H430v-50a14 14 0 0 1 14-14z"/>
+    <text class="head-text" x="452" y="389">ORDERS</text>
+    <text class="subhead" x="452" y="408">Pesanan laundry dan status pengerjaan</text>
+    <text class="field" x="452" y="447">id</text><text class="key" x="710" y="447">PK · UUID</text><line class="divider" x1="450" y1="457" x2="790" y2="457"/>
+    <text class="field" x="452" y="481">order_number</text><text class="key" x="710" y="481">UNIQUE</text><line class="divider" x1="450" y1="491" x2="790" y2="491"/>
+    <text class="field" x="452" y="515">customer_id</text><text class="key" x="710" y="515">FK → CUSTOMERS</text><line class="divider" x1="450" y1="525" x2="790" y2="525"/>
+    <text class="field" x="452" y="549">service_id</text><text class="key" x="710" y="549">FK → SERVICES</text><line class="divider" x1="450" y1="559" x2="790" y2="559"/>
+    <text class="field" x="452" y="583">shoe_type · shoe_brand · shoe_size</text><line class="divider" x1="450" y1="593" x2="790" y2="593"/>
+    <text class="field" x="452" y="617">status · total_amount</text><line class="divider" x1="450" y1="627" x2="790" y2="627"/>
+    <text class="field" x="452" y="651">delivery_type · delivery_address</text><line class="divider" x1="450" y1="661" x2="790" y2="661"/>
+    <text class="field" x="452" y="685">delivery_proof · completed_at</text><line class="divider" x1="450" y1="695" x2="790" y2="695"/>
+    <text class="field" x="452" y="729">notes · created_at</text>
+  </g>
+
+  <g>
+    <rect class="card" x="865" y="385" width="300" height="305" rx="14"/>
+    <path class="card-head" d="M879 385h272a14 14 0 0 1 14 14v50H865v-50a14 14 0 0 1 14-14z"/>
+    <text class="head-text" x="887" y="419">PAYMENTS</text>
+    <text class="subhead" x="887" y="438">Pemasukan dan pengeluaran</text>
+    <text class="field" x="887" y="476">id</text><text class="key" x="1083" y="476">PK · UUID</text><line class="divider" x1="885" y1="486" x2="1145" y2="486"/>
+    <text class="field" x="887" y="510">order_id</text><text class="key" x="1000" y="510">FK · nullable*</text><line class="divider" x1="885" y1="520" x2="1145" y2="520"/>
+    <text class="field" x="887" y="544">amount · payment_method</text><line class="divider" x1="885" y1="554" x2="1145" y2="554"/>
+    <text class="field" x="887" y="578">transaction_type</text><line class="divider" x1="885" y1="588" x2="1145" y2="588"/>
+    <text class="field" x="887" y="612">description · category</text><line class="divider" x1="885" y1="622" x2="1145" y2="622"/>
+    <text class="field" x="887" y="646">payment_date</text>
+    <text class="subhead" x="887" y="672">* NULL untuk transaksi expense</text>
+  </g>
+
+  <rect class="note" x="40" y="535" width="310" height="100" rx="12"/>
+  <text class="note-text" x="58" y="563">Multi-pasang dan metadata pengantaran</text>
+  <text class="note-text" x="58" y="585">disimpan di payload orders.notes, bukan</text>
+  <text class="note-text" x="58" y="607">pada tabel order_items terpisah.</text>
+
+  <text class="subhead" x="865" y="730">income → terhubung ke orders</text>
+  <text class="subhead" x="865" y="751">expense → order_id kosong + kategori</text>
+  <text class="subhead" x="40" y="810">Supabase PostgreSQL · T-Step Lab</text>
+  <text class="subhead" x="930" y="810">PK = Primary Key · FK = Foreign Key</text>
+</svg>

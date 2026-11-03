@@ -1,1 +1,0 @@
-window.TSTEP_API_BASE_URL = "";
